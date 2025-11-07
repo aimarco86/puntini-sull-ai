@@ -1,0 +1,58 @@
+body {
+  background: #18122B;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+.timer-container {
+  background: #232946;
+  color: #f2f2f2;
+  width: 320px;
+  margin: 80px auto 0 auto;
+  padding: 32px 24px 24px 24px;
+  border-radius: 18px;
+  box-shadow: 0 10px 32px rgba(28,10,102,0.19);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-display {
+  font-size: 3.2rem;
+  font-family: 'Roboto Mono', 'Consolas', monospace;
+  margin-bottom: 28px;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
+.timer-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.timer-buttons button {
+  background: #5257db;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 22px;
+  font-size: 1.05rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+  box-shadow: 0 2px 10px rgba(91, 112, 205, 0.13);
+}
+
+.timer-buttons button:disabled {
+  background: #bdbdbd;
+  color: #444;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.timer-buttons button:not(:disabled):hover {
+  background: #232946;
+  color: #ffeedd;
+  box-shadow: 0 3px 18px rgba(100, 100, 220, 0.22);
+}
