@@ -1,18 +1,407 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Modern React Timer</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <!-- React and ReactDOM CDN for standalone demo purposes -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Babel for JSX transformation in the browser (demo usage only) -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script type="text/babel" src="main.js"></script>
-  </body>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dorksense. // Artificial Education</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom CSS for Neo-Brutalist elements and animations.
+          We use this to push beyond standard Tailwind utilities.
+        */
+        
+        body {
+            /* Use the monospaced font for the "digital/raw" brutalist feel */
+            font-family: 'IBM Plex Mono', 'Inter', sans-serif;
+            background-color: #f5f5f5; /* Off-white, like zinc-100 */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            /* Use the bold sans-serif for high-impact headings */
+            font-family: 'Inter', sans-serif;
+            font-weight: 900; /* Extra black */
+            text-transform: uppercase;
+        }
+
+        /* The classic Neo-Brutalist "hard shadow" card */
+        .card-neo {
+            background-color: white;
+            border: 2px solid #000;
+            border-radius: 0.5rem; /* Following rounded-lg convention */
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.2s ease-out;
+        }
+        
+        .card-neo:hover {
+            box-shadow: 8px 8px 0px #000;
+            transform: translate(-4px, -4px);
+        }
+
+        /* Hard shadow for buttons */
+        .btn-neo {
+            border: 2px solid #000;
+            border-radius: 0.5rem;
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.2s ease-out;
+            font-weight: 700;
+        }
+
+        .btn-neo:hover {
+            box-shadow: 6px 6px 0px #000;
+            transform: translate(-2px, -2px);
+        }
+        
+        .btn-neo:active {
+            box-shadow: 0px 0px 0px #000;
+            transform: translate(4px, 4px);
+        }
+
+        /* Marquee (scrolling text) animation */
+        .marquee {
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Animate-on-scroll classes */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .scroll-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom "brutalist" cursor - hidden on mobile */
+        .cursor-custom {
+            display: none; /* Hidden by default */
+            width: 20px;
+            height: 20px;
+            background-color: #a3e635; /* lime-400 */
+            border: 2px solid #000;
+            border-radius: 0.25rem; /* rounded-sm */
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease-out;
+        }
+
+        @media (min-width: 768px) {
+            /* Show cursor only on md screens and up (non-touch) */
+            .cursor-custom {
+                display: block;
+            }
+        }
+        
+    </style>
+</head>
+<body class="bg-zinc-100 text-black overflow-x-hidden">
+
+    <!-- Custom Cursor Element -->
+    <div class="cursor-custom" id="custom-cursor"></div>
+
+    <!-- Header -->
+    <header class="p-4 md:p-6 sticky top-0 z-50 bg-zinc-100/80 backdrop-blur-md border-b-2 border-black">
+        <nav class="container mx-auto flex justify-between items-center">
+            <div classs="flex items-center">
+                <a href="#" class="text-2xl md:text-3xl font-bold uppercase hover:text-blue-500 transition-colors">dorksense.</a>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="#modules" class="btn-neo bg-yellow-300 px-4 py-2 text-sm md:text-base">Modules</a>
+                <a href="#join" class="btn-neo bg-lime-300 px-4 py-2 text-sm md:text-base">Join</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 md:p-8">
+
+        <!-- Hero Section -->
+        <section class="min-h-[70vh] flex flex-col items-center justify-center text-center relative overflow-hidden py-16">
+            <div class="absolute inset-0 grid grid-cols-10 grid-rows-10 -z-10 opacity-30">
+                <!-- Background grid for "digital" feel -->
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-r-2 border-b-2 border-dashed border-zinc-400"></div>
+                <div class="col-span-1 row-span-1 border-b-2 border-dashed border-zinc-400"></div>
+                <!-- Repeat for all 100 grid cells... (this is a simplified example) -->
+            </div>
+            
+            <div class="scroll-animate">
+                <h1 class="text-5xl sm:text-7xl lg:text-9xl tracking-tighter leading-none" style="text-shadow: 4px 4px 0px #a3e635;">
+                    ARTIFICIAL
+                </h1>
+                <h1 class="text-5xl sm:text-7xl lg:text-9xl tracking-tighter leading-none -mt-4 sm:-mt-8 lg:-mt-12" style="text-shadow: 4px 4px 0px #fde047;">
+                    EDUCATION
+                </h1>
+            </div>
+
+            <p class="text-lg md:text-xl max-w-2xl mt-8 scroll-animate" style="transition-delay: 150ms;">
+                The future of learning is not human. It's a collaboration. Welcome to the new era of AI-driven education.
+            </p>
+            <div class="mt-8 scroll-animate" style="transition-delay: 300ms;">
+                 <a href="#about" class="btn-neo bg-blue-500 text-white px-8 py-4 text-lg">
+                    [R]E-LEARN_NOW
+                 </a>
+            </div>
+        </section>
+
+        <!-- Marquee Section -->
+        <section class="bg-black text-white py-4 md:py-6 my-16 border-y-2 border-black -mx-4 md:-mx-8 transform -rotate-1">
+            <div class="marquee">
+                <div class="marquee-content text-2xl md:text-4xl font-bold uppercase">
+                    <span class="mx-4 text-lime-300">Personalized Paths</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-pink-400">Instant Feedback</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-cyan-300">Data-Driven Insights</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-lime-300">24/7 AI Tutors</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-pink-400">Adaptive Curriculum</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-cyan-300">Skill Mastery</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <!-- Repeat for smooth loop -->
+                    <span class="mx-4 text-lime-300">Personalized Paths</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-pink-400">Instant Feedback</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-cyan-300">Data-Driven Insights</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-lime-300">24/7 AI Tutors</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-pink-400">Adaptive Curriculum</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                    <span class="mx-4 text-cyan-300">Skill Mastery</span>
+                    <span class="mx-4 text-yellow-300">//</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="my-24 scroll-animate">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                <h2 class="text-4xl md:text-5xl md:col-span-1">WHAT_IS_AE?</h2>
+                <div class="card-neo p-6 md:col-span-2">
+                    <p class="text-lg mb-4">
+                        <strong class="text-blue-500">Artificial Education (AE)</strong> isn't just about robots in classrooms. It's a fundamental shift. We use advanced AI to dismantle the one-size-fits-all model.
+                    </p>
+                    <p class="mb-4">
+                        Imagine a learning path built *for you*, adapting in real-time to your strengths, weaknesses, and curiosity. No more boring lectures. No more falling behind.
+                    </p>
+                    <p class="font-bold border-t-2 border-dashed border-zinc-300 pt-4">
+                        This is not replacement. This is augmentation.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Modules Section -->
+        <section id="modules" class="my-24">
+            <h2 class="text-4xl md:text-5xl mb-8 text-center scroll-animate">CORE_MODULES</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                
+                <!-- Module 1 -->
+                <div class="card-neo bg-lime-300 scroll-animate" style="transition-delay: 0ms;">
+                    <div class="p-6">
+                        <span class="text-sm font-bold block mb-2">// MODULE 01</span>
+                        <h3 class="text-3xl mb-3">AI-Lit</h3>
+                        <p>Literacy for the new age. Learn to prompt, debug, and co-create with large language models. This is the new 'reading & writing'.</p>
+                    </div>
+                    <div class="border-t-2 border-black p-4">
+                        <span class="font-bold">> Status: OPEN</span>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="card-neo bg-yellow-300 scroll-animate" style="transition-delay: 150ms;">
+                    <div class="p-6">
+                        <span class="text-sm font-bold block mb-2">// MODULE 02</span>
+                        <h3 class="text-3xl mb-3">Quantum-Math</h3>
+                        <p>Forget calculus. Start thinking in probabilities and qubits. We break down quantum concepts for creative and strategic minds.</p>
+                    </div>
+                    <div class="border-t-2 border-black p-4">
+                        <span class="font-bold">> Status: OPEN</span>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="card-neo bg-pink-400 scroll-animate" style="transition-delay: 300ms;">
+                    <div class="p-6">
+                        <span class="text-sm font-bold block mb-2">// MODULE 03</span>
+                        <h3 class="text-3xl mb-3">Bio-Hacking</h3>
+                        <p>Your body is a system. Learn the data-driven principles of nutrition, sleep, and mental performance. Optimize your human hardware.</p>
+                    </div>
+                    <div class="border-t-2 border-black p-4">
+                        <span class="font-bold">> Status: BETA</span>
+                    </div>
+                </div>
+
+                <!-- Module 4 (Spans 2 cols on LG) -->
+                <div class="card-neo bg-cyan-300 lg:col-span-2 scroll-animate" style="transition-delay: 0ms;">
+                    <div class="p-6">
+                        <span class="text-sm font-bold block mb-2">// MODULE 04</span>
+                        <h3 class="text-3xl mb-3">Psyche-Code</h3>
+                        <p>Understand the 'code' of human behavior, cognitive biases, and decision-making. Use AI-driven insights to master communication and self-awareness.</p>
+                    </div>
+                    <div class="border-t-2 border-black p-4">
+                        <span class="font-bold">> Status: OPEN</span>
+                    </div>
+                </div>
+
+                <!-- Module 5 -->
+                <div class="card-neo bg-white scroll-animate" style="transition-delay: 150ms;">
+                    <div class="p-6">
+                        <span class="text-sm font-bold block mb-2">// MODULE 05</span>
+                        <h3 class="text-3xl mb-3">System-Build</h3>
+                        <p>Go from idea to execution. Learn rapid prototyping, no-code development, and systems thinking. Build your future, fast.</p>
+                    </div>
+                    <div class="border-t-2 border-black p-4">
+                        <span class="font-bold">> Status: SOON</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="join" class="my-24 bg-blue-500 text-white p-6 md:p-10 rounded-lg border-2 border-black" style="box-shadow: 8px 8px 0px #000;">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                
+                <div class="scroll-animate">
+                    <h2 class="text-4xl md:text-5xl leading-tight">
+                        THE WAITLIST IS_OPEN.
+                    </h2>
+                    <p class="text-lg mt-4 text-blue-100">
+                        The old system is obsolete. Be the first to access the future of education. Spots are limited. No spam, just a single notification on launch.
+                    </p>
+                </div>
+
+                <form class="flex flex-col gap-4 scroll-animate" style="transition-delay: 150ms;" onsubmit="handleFormSubmit(event)">
+                    <div>
+                        <label for="email" class="font-bold mb-1 block">// YOUR_EMAIL:</label>
+                        <input type="email" id="email" name="email" required
+                               class="w-full p-3 rounded-lg border-2 border-black text-black text-lg font-mono focus:outline-none focus:ring-4 focus:ring-yellow-300"
+                               placeholder="you@domain.com">
+                    </div>
+                    <button type="submit" class="btn-neo bg-lime-300 text-black p-4 text-lg">
+                        > SUBMIT_REQUEST
+                    </button>
+                    
+                    <!-- Message Box -->
+                    <div id="message-box" class="hidden p-3 bg-yellow-300 text-black border-2 border-black rounded-lg font-bold text-center">
+                        <p id="message-text"></p>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-black mt-16 text-center p-8">
+        <p class="text-2xl font-bold uppercase mb-2">dorksense.</p>
+        <p class="font-mono text-sm text-zinc-600">
+            © 2025 // ALL RIGHTS RESERVED. (OR ARE THEY?)
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Custom Cursor Logic ---
+            const cursor = document.getElementById('custom-cursor');
+            if (cursor) {
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                });
+            }
+
+            // --- Animate-on-Scroll Logic ---
+            const animatedElements = document.querySelectorAll('.scroll-animate');
+
+            if ("IntersectionObserver" in window) {
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                        } else {
+                            // Optional: remove class to re-animate on scroll-up
+                            entry.target.classList.remove('is-visible');
+                        }
+                    });
+                }, {
+                    threshold: 0.1 // Trigger when 10% of the element is visible
+                });
+
+                animatedElements.forEach(el => {
+                    observer.observe(el);
+                });
+            } else {
+                // Fallback for browsers that don't support IntersectionObserver
+                animatedElements.forEach(el => {
+                    el.classList.add('is-visible');
+                });
+            }
+        });
+
+        // --- Form Submission Handler ---
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent actual form submission
+            
+            const emailInput = document.getElementById('email');
+            const messageBox = document.getElementById('message-box');
+            const messageText = document.getElementById('message-text');
+            
+            if (emailInput.value) {
+                // Simulate a successful submission
+                messageText.textContent = 'SUCCESS! You are on the list.';
+                messageBox.classList.remove('hidden', 'bg-red-400');
+                messageBox.classList.add('bg-yellow-300');
+                emailInput.value = ''; // Clear the input
+            } else {
+                // This case is handled by 'required' attribute, but good to have
+                messageText.textContent = 'Error: Email is required.';
+                messageBox.classList.remove('hidden', 'bg-yellow-300');
+                messageBox.classList.add('bg-red-400');
+            }
+
+            messageBox.classList.remove('hidden');
+
+            // Hide the message after 3 seconds
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 3000);
+        }
+
+    </script>
+</body>
 </html>
